@@ -41,12 +41,19 @@ jobs:
     - name: Get Flutter dependencies
       run: flutter pub get
       
+    - name: Install Android SDK
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y android-sdk
+          echo "y" | sudo $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "build-tools;30.0.3" "platforms;android-30" "platform-tools"
+
     - name: Build APK
       run: |
-        flutter config --no-analytics
-        flutter doctor -v
-        cd $GITHUB_WORKSPACE
-        flutter build apk --debug
+          flutter config --no-analytics
+          flutter doctor -v
+          cd $GITHUB_WORKSPACE
+          flutter build apk --debug --verbose
+
         
     - name: Upload APK artifacts
       uses: actions/upload-artifact@v4
